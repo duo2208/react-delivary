@@ -1,27 +1,48 @@
-import Page from "./components/Page";
-import Title from "./components/Title";
-import Navbar from "./components/Navbar";
-import ProductItem from "./components/ProductItem";
+import React from "react";
+import Page from "../../components/Page";
+import Title from "../../components/Title";
+import Navbar from "../../components/Navbar";
+import ProductItem from "../../components/ProductItem";
 
-const fakeProduct = {
-    id: "CACDA421",
-    name: "해물 계란 라면",
-    price: "6000",
-    thumbnail: "./images/menu-해물계란라면.jpg",
-};
+import ProductApi from "shared/api/ProductApi";
 
-const ProductPage = () => {
-    return (
-        <div className="ProductPage">
-            <Page header={<Title>메뉴목록</Title>} footer={<Navbar />}>
-                <ul>
-                    <li>
-                        <ProductItem product={fakeProduct} />
-                    </li>
-                </ul>
-            </Page>
-        </div>
-    );
+class ProductPage extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            productList: [],
+        }
+    }
+
+    async fetch() {
+        try {
+            const productList = await ProductApi.fetchProductList();
+            this.setState({productList});
+        } catch(e) {
+            console.error(e);
+        };
+    };
+
+    // 컴포넌트가 렌더되고 돔에 마운트 되었을 때 fetch() 실행
+    componentDidMount() {
+        this.fetch();
+    };
+
+    render() {
+        return (
+            <div className="ProductPage">
+                <Page header={<Title>메뉴목록</Title>} footer={<Navbar />}>
+                    <ul>
+                        {this.state.productList.map(product => (
+                            <li key={product.id}>
+                                <ProductItem product={product} />
+                            </li>
+                        ))}
+                    </ul>
+                </Page>
+            </div>
+        );
+    };
 };
 
 export default ProductPage;
