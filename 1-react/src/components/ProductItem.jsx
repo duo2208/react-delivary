@@ -3,7 +3,7 @@ import Button from "./Button";
 const ProductItem = ({product}) => {
     const {name, price, thumbnail} = product;
 
-    return(
+    return (
         <div className="ProductItem">
             <div className="description">
                 <h2>{name}</h2>
