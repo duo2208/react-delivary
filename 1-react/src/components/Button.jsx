@@ -1,13 +1,9 @@
-const Button = ({ styleType, block, children, onClick }) => {
-    let className = 'Button';
+const Button = ({ styleType, block, ...rest }) => {
+    let className = "Button";
     if (styleType) className += ` ${styleType}`;
-    if (block) className += ` block`;
+    if (block) className += " block";
 
-    return (
-        <button className={className} onClick={onClick}>
-            {children}
-        </button>
-    )
+    return <button {...rest} className={className} />;
 };
 
 export default Button;
